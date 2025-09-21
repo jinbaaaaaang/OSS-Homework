@@ -1,11 +1,25 @@
 def read_data(filename):
     # TODO) Read `filename` as a list of integers
     data = []
+
+    with open(filename) as fi:
+        for line in fi.readlines():
+            try:
+                values = [int(word) for word in line.strip().split(",")]
+                data.append(values) 
+            except ValueError:
+                pass
+
     return data
 
 def calc_weighted_average(data_2d, weight):
     # TODO) Calculate the weighted averages of each row of `data_2d`
     average = []
+
+    for score in data_2d:
+        avg = score[0] * weight[0] + score[1] * weight[1]
+        average.append(avg)
+    
     return average
 
 def analyze_data(data_1d):
@@ -14,6 +28,17 @@ def analyze_data(data_1d):
     mean = 0
     var = 0
     median = 0
+
+    mean = sum(data_1d) / len(data_1d)
+
+    var = sum((x - mean) ** 2 for x in data_1d) / len(data_1d)
+    
+    new_data_1d = sorted(data_1d)
+    if len(data_1d) % 2 == 1:
+        median = new_data_1d[len(data_1d) // 2]
+    else:
+        median = (new_data_1d[len(data_1d) // 2 - 1] + new_data_1d[len(data_1d) // 2]) / 2
+
     return mean, var, median, min(data_1d), max(data_1d)
 
 if __name__ == '__main__':
